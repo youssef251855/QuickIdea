@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أفكار يومية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+        }
+        
+        .idea-box {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .idea-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn {
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .share-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .share-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="container mx-auto max-w-3xl">
+        <div class="idea-box bg-white rounded-2xl p-8 md:p-10 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">أفكار يومية ملهمة</h1>
+            <p class="text-gray-600 mb-8">اضغط على الزر لتحصل على فكرة جديدة لتجربها اليوم</p>
+            
+            <div class="idea-container bg-gray-50 rounded-xl p-8 mb-8 min-h-48 flex flex-col items-center justify-center border border-gray-200">
+                <p id="idea-text" class="text-xl text-gray-500 mb-4">اختر إحدى الأفكار التالية:</p>
+                <div id="idea-options" class="w-full grid gap-4">
+                    <!-- Idea options will be inserted here by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button id="new-idea-btn" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full text-lg flex items-center justify-center gap-2">
+                    <i class="fas fa-dice"></i>
+                    فكرة جديدة
+                </button>
+                
+                <button id="share-btn" class="share-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 px-6 rounded-full text-lg flex items-center justify-center gap-2">
+                    <i class="fas fa-share-alt"></i>
+                    مشاركة
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // Ideas array
+        const ideas = [
+            "اقرأ كتاباً جديداً في مجال تهتم به",
+            "تعلم كلمة جديدة في لغة أجنبية وحاول استخدامها اليوم",
+            "قم بزيارة مكان لم تذهب إليه من قبل في مدينتك",
+            "اتصل بصديق قديم وسله عن أحواله",
+            "جرب وصفة طعام جديدة لم تجربها من قبل",
+            "خصص 10 دقائق للجلوس في صمت والتفكير بهدوء",
+            "اكتب ثلاثة أشياء أنت ممتن لها في حياتك",
+            "قدم مجاملة صادقة لشخص ما",
+            "جرب تمريناً رياضياً لم تقم به من قبل",
+            "تعلم مهارة بسيطة يمكن إتقانها في يوم واحد",
+            "قم بتنظيف وتنظيم مساحة صغيرة في منزلك",
+            "شاهد فيلماً وثائقياً عن موضوع يثير اهتمامك",
+            "اكتب رسالة لنفسك في المستقبل",
+            "تطوع بمساعدة شخص ما دون انتظار مقابل",
+            "قم بالمشي في مكان طبيعي واستمتع بالهواء النقي",
+            "خصص وقتاً للرسم أو التلوين حتى لو لم تكن فناناً",
+            "قم بإعداد قائمة بالأهداف التي تريد تحقيقها هذا الشهر",
+            "جرب نوعاً جديداً من الشاي أو القهوة",
+            "قم بزيارة متحف أو معرض فني",
+            "تعلم نكتة جديدة واقصها على أصدقائك"
+        ];
+        
+        // DOM elements
+        const ideaText = document.getElementById('idea-text');
+        const newIdeaBtn = document.getElementById('new-idea-btn');
+        // Get 3 unique random ideas
+        function getRandomIdeas() {
+            const shuffled = [...ideas].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 3);
+        }
+        
+        // Update idea options
+        function updateIdeas() {
+            const ideaOptions = document.getElementById('idea-options');
+            ideaOptions.innerHTML = '';
+            
+            const options = getRandomIdeas();
+            options.forEach((idea, index) => {
+                const option = document.createElement('div');
+                option.className = 'bg-white p-4 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors border border-gray-200';
+                option.innerHTML = `
+                    <p class="text-lg text-gray-800">${idea}</p>
+                `;
+                option.addEventListener('click', () => {
+                    // Remove active class from all options
+                    document.querySelectorAll('#idea-options div').forEach(el => {
+                        el.classList.remove('border-blue-500', 'bg-blue-50');
+                    });
+                    // Add active class to selected option
+                    option.classList.add('border-blue-500', 'bg-blue-50');
+                    // Update the selected idea
+                    ideaText.textContent = idea;
+                });
+                ideaOptions.appendChild(option);
+            });
+        }
+        
+        // Share functionality
+        const shareBtn = document.getElementById('share-btn');
+        
+        function shareIdea() {
+            const currentIdea = ideaText.textContent;
+            const shareText = `فكرتي اليوم: "${currentIdea}" - جربها بنفسك من موقع أفكار يومية!`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+            
+            // You could use window.open() directly or implement a share dialog
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        // Event listeners
+        newIdeaBtn.addEventListener('click', updateIdeas);
+        shareBtn.addEventListener('click', shareIdea);
+        
+        // Initialize with instructions
+        ideaText.textContent = "مرحباً! اضغط على الزر بالأسفل لتحصل على أفكار لتختار منها";
+    </script>
+
+</html>
